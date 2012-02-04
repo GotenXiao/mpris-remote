@@ -18,6 +18,7 @@ COMMANDS:
   stop                 stop playback
   play                 start playback
   pause                pause playback
+  playpause            starts playing if paused/stopped, pauses if playing
 
   trackinfo            print metadata for current track
   trackinfo <track#>   print metadata for given track
@@ -303,6 +304,14 @@ class MPRISRemote(object):
     @explain_numargs(0)
     def pause(self):
         self.player.Pause()
+
+    @explain_numargs(0)
+    def playpause(self):
+        status = self.player.GetStatus()
+        if status[0] != 0:
+            self.player.Play()
+        else:
+            self.player.Pause()
 
     @explain_numargs(0, 1)
     @explain_argtype(0, is_zero_to_100, optional=True)
